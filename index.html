@@ -3,10 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azure Static Web Apps</title>
+    <title>Azure Static Web Apps + Functions</title>
 </head>
 <body>
     <h1>ようこそ！🚀</h1>
-    <p>Azure Static Web Appsで公開されたWebページです。</p>
+    <p id="response">APIのレスポンスを取得中...</p>
+
+    <script>
+        async function fetchApi() {
+            try {
+                const response = await fetch("https://test-project-20250606165959496.azurewebsites.net/api/HttpExample?name=Futa");
+                const data = await response.text();
+                document.getElementById("response").innerText = data;
+            } catch (error) {
+                document.getElementById("response").innerText = "API呼び出しエラー";
+            }
+        }
+        fetchApi();
+    </script>
 </body>
 </html>
