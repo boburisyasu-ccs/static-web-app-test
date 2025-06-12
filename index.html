@@ -3,23 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azure Static Web Apps + Functions</title>
+    <title>名前入力フォーム</title>
 </head>
 <body>
     <h1>ようこそ！🚀</h1>
-    <p id="response">APIのレスポンスを取得中...</p>
+    <p>名前を入力してください:</p>
+    <input type="text" id="nameInput" placeholder="あなたの名前">
+    <button onclick="fetchApi()">送信</button>
+
+    <h2>APIのレスポンス:</h2>
+    <p id="response">ここに表示されます</p>
 
     <script>
         async function fetchApi() {
+            const name = document.getElementById("nameInput").value;
+            if (!name) {
+                document.getElementById("response").innerText = "名前を入力してください";
+                return;
+            }
             try {
-                const response = await fetch("https://test-project-20250606165959496.azurewebsites.net/api/httpexample?name=Futa");
+                const response = await fetch(`https://test-project-20250606165959496.azurewebsites.net/api/httpexample?name=${name}`);
                 const data = await response.text();
                 document.getElementById("response").innerText = data;
             } catch (error) {
                 document.getElementById("response").innerText = "API呼び出しエラー";
             }
         }
-        fetchApi();
     </script>
 </body>
 </html>
