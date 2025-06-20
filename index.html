@@ -16,18 +16,24 @@
 
     <script>
         async function fetchApi() {
-            const name = document.getElementById("nameInput").value;
-            if (!name) {
-                document.getElementById("response").innerText = "名前を入力してください";
-                return;
+          const name = document.getElementById("nameInput").value;
+          if (!name) {
+            document.getElementById("response").innerText = "名前を入力してください";
+            return;
+          }
+        
+          try {
+            const res = await fetch(`https://test-project-...azurewebsites.net/api/volcano?name=${encodeURIComponent(name)}`);
+            if (res.status === 404) {
+              document.getElementById("response").innerText = "その火山は見つかりませんでした";
+              return;
             }
-            try {
-                const response = await fetch(`https://test-project-20250606165959496.azurewebsites.net/api/httpexample?name=${name}`);
-                const data = await response.text();
-                document.getElementById("response").innerText = data;
-            } catch (error) {
-                document.getElementById("response").innerText = "API呼び出しエラー";
-            }
+            const data = await res.json();
+            document.getElementById("response").innerText =
+              `📍 ${data.name}（標高: ${data.location.altitude}m）\n緯度: ${data.location.latitude}, 経度: ${data.location.longitude}`;
+          } catch (err) {
+            document.getElementById("response").innerText = "検索中にエラーが発生しました";
+          }
         }
     </script>
 </body>
