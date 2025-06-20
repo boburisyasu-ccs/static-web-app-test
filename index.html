@@ -23,7 +23,7 @@
           }
         
           try {
-            const res = await fetch(`https://test-project-...azurewebsites.net/api/volcano?name=${encodeURIComponent(name)}`);
+            const res = await fetch(`https://test-project-20250606165959496.azurewebsites.net/api/volcano?name=${encodeURIComponent(name)}`);
             if (res.status === 404) {
               document.getElementById("response").innerText = "その火山は見つかりませんでした";
               return;
