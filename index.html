@@ -30,8 +30,15 @@
             }
             const data = await res.json();
             console.log("📦 API Response:", data);
+            const volcano = Array.isArray(data) ? data[0] : data;
+
+            if (!volcano || !volcano.name) {
+              document.getElementById("response").innerText = "🌋 データが見つかりませんでした";
+              return;
+            }
+              
             document.getElementById("response").innerText =
-              `📍 ${data.name}（標高: ${data.elevationMeters}m）\n緯度: ${data.location.latitude}, 経度: ${data.location.longitude}`;
+              `📍 ${volcano.name}（標高: ${volcano.elevationMeters}m）\n緯度: ${volcano.location.latitude}, 経度: ${volcano.location.longitude}`;
           } catch (err) {
             document.getElementById("response").innerText = "検索中にエラーが発生しました";
           }
