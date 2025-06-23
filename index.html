@@ -29,6 +29,7 @@
               return;
             }
             const data = await res.json();
+            console.log("📦 API Response:", data);
             document.getElementById("response").innerText =
               `📍 ${data.name}（標高: ${data.elevationMeters}m）\n緯度: ${data.location.latitude}, 経度: ${data.location.longitude}`;
           } catch (err) {
