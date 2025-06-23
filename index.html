@@ -23,14 +23,14 @@
           }
         
           try {
-            const res = await fetch(`https://test-project-20250606165959496.azurewebsites.net/api/getVolcanoByName?name=${encodeURIComponent(name)}`);
+            const res = await fetch(`https://test-project-20250606165959496.azurewebsites.net/api/volcano/${encodeURIComponent(name)}`);
             if (res.status === 404) {
               document.getElementById("response").innerText = "その火山は見つかりませんでした";
               return;
             }
             const data = await res.json();
             document.getElementById("response").innerText =
-              `📍 ${data.name}（標高: ${data.location.altitude}m）\n緯度: ${data.location.latitude}, 経度: ${data.location.longitude}`;
+              `📍 ${data.name}（標高: ${data.elevationMeters}m）\n緯度: ${data.location.latitude}, 経度: ${data.location.longitude}`;
           } catch (err) {
             document.getElementById("response").innerText = "検索中にエラーが発生しました";
           }
