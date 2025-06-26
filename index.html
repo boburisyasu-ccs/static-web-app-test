@@ -53,11 +53,11 @@
             return;
           }
           const file = fileInput.files[0];
+          const fileName = encodeURIComponent(file.name); // または自作の名前
           try {
-            const file = document.getElementById("fileInput").files[0];
-            const fileName = encodeURIComponent(file.name); // または自作の名前
+
             const url = `https://test-project-20250606165959496.azurewebsites.net/api/upload?filename=${fileName}`;
-            await fetch(url, {
+            const res await fetch(url, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/octet-stream'
