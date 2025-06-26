@@ -10,6 +10,8 @@
     <p>火山名を入力してください:</p>
     <input type="text" id="nameInput" placeholder="火山の名前">
     <button onclick="fetchApi()">送信</button>
+    <input type="file" id="fileInput" />　
+    <button onclick="uploadFile()">アップロード</button>
 
     <h2>検索結果:</h2>
     <p id="response">ここに表示されます</p>
@@ -43,6 +45,29 @@
             document.getElementById("response").innerText = "検索中にエラーが発生しました";
           }
         }
+        async function uploadFile() {
+          const fileInput = document.getElementById('fileInput');
+          if (fileInput.files.length === 0) {
+            alert("ファイルを選択してください");
+            return;
+          }
+          const file = fileInput.files[0];
+          try {
+            const res = await fetch('https://test-project-20250606165959496.azurewebsites.net/api/upload', {
+              method: 'POST',
+              headers: {
+                'Content-Type': file.type
+              },
+              body: file
+            });
+            const text = await res.text();
+            alert(res.ok ? `✅ アップロード成功: ${text}` : `❌ 失敗: ${text}`);
+          } catch (e) {
+            alert("アップロード中にエラーが発生しました");
+            console.error(e);
+          }
+        }
+
     </script>
 </body>
 </html>
