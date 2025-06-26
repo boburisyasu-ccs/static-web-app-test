@@ -10,7 +10,7 @@
     <p>火山名を入力してください:</p>
     <input type="text" id="nameInput" placeholder="火山の名前">
     <button onclick="fetchApi()">送信</button>
-    <p>アップロード:</p>
+    <p>写真アップロード:</p>
     <input type="file" id="fileInput" />　
     <button onclick="uploadFile()">アップロード</button>
 
@@ -54,7 +54,10 @@
           }
           const file = fileInput.files[0];
           try {
-            const res = await fetch('https://test-project-20250606165959496.azurewebsites.net/api/upload', {
+            const file = document.getElementById("fileInput").files[0];
+            const fileName = encodeURIComponent(file.name); // または自作の名前
+            const url = `https://test-project-20250606165959496.azurewebsites.net/api/upload?filename=${fileName}`;
+            await fetch(url, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/octet-stream'
