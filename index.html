@@ -57,7 +57,7 @@
             const res = await fetch('https://test-project-20250606165959496.azurewebsites.net/api/upload', {
               method: 'POST',
               headers: {
-                'Content-Type': file.type || "application/octet-stream"
+                'Content-Type': 'application/octet-stream'
               },
               body: file
             });
