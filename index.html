@@ -6,7 +6,7 @@
     <title>火山検索フォーム</title>
 </head>
 <body>
-    <h1>ようこそ！🚀</h1>
+    <h1>🚀ようこそ！🚀</h1>
     <p>火山名を入力してください:</p>
     <input type="text" id="nameInput" placeholder="火山の名前">
     <button onclick="fetchApi()">送信</button>
@@ -60,7 +60,7 @@
     
           // 🖼️ 画像追加
           const img = document.createElement("img");
-          img.src = `https://your-app.azurewebsites.net/api/photo/${encodeURIComponent(volcano.name)}.jpg`;
+          img.src = `https://test-project-20250606165959496.azurewebsites.net/api/photo/${encodeURIComponent(volcano.name)}.jpg`;
           img.alt = `${volcano.name}の写真`;
           img.style.maxWidth = "300px";
           img.style.marginTop = "10px";
