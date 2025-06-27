@@ -18,34 +18,66 @@
     <p id="response">ここに表示されます</p>
 
     <script>
-        async function fetchApi() {
-          const name = document.getElementById("nameInput").value;
-          if (!name) {
-            document.getElementById("response").innerText = "名前を入力してください";
+      async function fetchApi() {
+        const name = document.getElementById("nameInput").value;
+        const responseElem = document.getElementById("response");
+    
+        // 🔄 結果をクリア
+        responseElem.innerText = "";
+    
+        if (!name) {
+          responseElem.innerText = "名前を入力してください";
+          return;
+        }
+    
+        try {
+          // 🔍 火山情報を取得
+          const res = await fetch(`https://test-project-20250606165959496.azurewebsites.net/api/volcano/${encodeURIComponent(name)}`);
+          if (res.status === 404) {
+            responseElem.innerText = "その火山は見つかりませんでした";
             return;
           }
-        
-          try {
-            const res = await fetch(`https://test-project-20250606165959496.azurewebsites.net/api/volcano/${encodeURIComponent(name)}`);
-            if (res.status === 404) {
-              document.getElementById("response").innerText = "その火山は見つかりませんでした";
-              return;
-            }
-            const data = await res.json();
-            console.log("📦 API Response:", data);
-            const volcano = Array.isArray(data) ? data[0] : data;
-
-            if (!volcano || !volcano.name) {
-              document.getElementById("response").innerText = "🌋 データが見つかりませんでした";
-              return;
-            }
-              
-            document.getElementById("response").innerText =
-              `📍 ${volcano.name}（標高: ${volcano.elevationMeters}m）\n緯度: ${volcano.location.latitude}, 経度: ${volcano.location.longitude}`;
-          } catch (err) {
-            document.getElementById("response").innerText = "検索中にエラーが発生しました";
+    
+          const data = await res.json();
+          console.log("📦 API Response:", data);
+    
+          const volcano = Array.isArray(data) ? data[0] : data;
+    
+          if (!volcano || !volcano.name) {
+            responseElem.innerText = "🌋 データが見つかりませんでした";
+            return;
           }
+    
+          // 📌 火山データ表示
+          responseElem.innerText =
+            `📍 ${volcano.name}（標高: ${volcano.elevationMeters}m）\n緯度: ${volcano.location.latitude}, 経度: ${volcano.location.longitude}`;
+    
+          // 🧹 古い画像を削除
+          const oldImg = responseElem.querySelector("img");
+          if (oldImg) {
+            responseElem.removeChild(oldImg);
+          }
+    
+          // 🖼️ 画像追加
+          const img = document.createElement("img");
+          img.src = `https://test-project-20250606165959496.azurewebsites.net/api/photo/${encodeURIComponent(volcano.name)}.jpg';
+          img.alt = `${volcano.name}の写真`;
+          img.style.maxWidth = "300px";
+          img.style.marginTop = "10px";
+    
+          // ⚠️ 画像が見つからなかった場合の処理
+          img.onerror = () => {
+            img.alt = `${volcano.name}の画像は見つかりませんでした`;
+            img.removeAttribute("src"); // 表示を消す or fallback画像も可
+          };
+    
+          responseElem.appendChild(document.createElement("br"));
+          responseElem.appendChild(img);
+        } catch (err) {
+          console.error("検索中にエラー:", err);
+          responseElem.innerText = "検索中にエラーが発生しました";
         }
+      }
         async function uploadFile() {
           const fileInput = document.getElementById('fileInput');
           if (fileInput.files.length === 0) {
